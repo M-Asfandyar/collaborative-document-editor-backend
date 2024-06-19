@@ -29,7 +29,7 @@ jobs:
       run: echo "$HEROKU_API_KEY" | heroku auth:token
 
     - name: Add Heroku Git Remote
-      run: heroku git:remote -a collaborative-document-editor-backend
+      run: heroku git:remote -a document-editor-backend
 
     - name: Deploy to Heroku
       run: git push heroku main

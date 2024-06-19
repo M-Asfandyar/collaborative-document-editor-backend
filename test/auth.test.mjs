@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as chai from 'chai';
+import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { createRequire } from 'module';
 
@@ -8,11 +8,12 @@ const { app, server } = require('../server');
 const User = require('../models/User'); 
 
 chai.use(chaiHttp);
+const { expect } = chai;
 
-process.env.PORT = 4001; // Used a different port for tests
+process.env.PORT = 4001; // Use a different port for tests
 
 describe('Authentication', function () {
-  this.timeout(20000); // longer timeout for the whole suite
+  this.timeout(20000); // Longer timeout for the whole suite
 
   before(async function () {
     this.timeout(20000); 
@@ -34,9 +35,9 @@ describe('Authentication', function () {
       .send({ username: 'testuser', password: 'password' })
       .end((err, res) => {
         if (err) done(err);
-        res.should.have.status(201);
-        res.body.should.be.a('object');
-        res.body.should.have.property('token');
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('token');
         done();
       });
   });
@@ -47,9 +48,9 @@ describe('Authentication', function () {
       .send({ username: 'testuser', password: 'password' })
       .end((err, res) => {
         if (err) done(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('User already exists');
+        expect(res).to.have.status(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('message').eql('User already exists');
         done();
       });
   });
@@ -60,9 +61,9 @@ describe('Authentication', function () {
       .send({ username: 'testuser', password: 'password' })
       .end((err, res) => {
         if (err) done(err);
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.should.have.property('token');
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('token');
         done();
       });
   });
@@ -73,9 +74,9 @@ describe('Authentication', function () {
       .send({ username: 'nonexistinguser', password: 'password' })
       .end((err, res) => {
         if (err) done(err);
-        res.should.have.status(401);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('Invalid username or password');
+        expect(res).to.have.status(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('message').eql('Invalid username or password');
         done();
       });
   });
@@ -92,9 +93,9 @@ describe('Authentication', function () {
           .set('Authorization', `Bearer ${token}`)
           .end((err, res) => {
             if (err) done(err);
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('username').eql('testuser');
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('username').eql('testuser');
             done();
           });
       });
@@ -106,9 +107,9 @@ describe('Authentication', function () {
       .set('Authorization', 'Bearer invalidtoken')
       .end((err, res) => {
         if (err) done(err);
-        res.should.have.status(401);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('Not authorized, token failed');
+        expect(res).to.have.status(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('message').eql('Not authorized, token failed');
         done();
       });
   });

@@ -20,7 +20,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-
     - name: Install Heroku CLI
       run: curl https://cli-assets.heroku.com/install.sh | sh
 
@@ -29,9 +28,8 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: echo "$HEROKU_API_KEY" | heroku auth:token
 
+    - name: Add Heroku Git Remote
+      run: heroku git:remote -a collaborative-document-editor-backend
+
     - name: Deploy to Heroku
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: |
-        git remote add heroku https://git.heroku.com/collaborative-document-editor-backend.git
-        git push heroku main
+      run: git push heroku main

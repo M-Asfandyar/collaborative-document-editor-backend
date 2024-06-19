@@ -20,9 +20,15 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+
     - name: Deploy to Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: |
+        echo $HEROKU_API_KEY > ~/.netrc
+        echo "machine api.heroku.com" >> ~/.netrc
+        echo "  login $HEROKU_API_KEY" >> ~/.netrc
+        echo "machine git.heroku.com" >> ~/.netrc
+        echo "  login $HEROKU_API_KEY" >> ~/.netrc
         git remote add heroku https://git.heroku.com/collaborative-document-editor-backend.git
         git push heroku main
